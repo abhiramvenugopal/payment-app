@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import { CardState } from './redux/cardNumberReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import CardNumber from "./components/CardNumber/CardNumber";
+import SavedCards from "./components/SavedCards/SavedCards";
 
 function App() {
   const cards=useSelector<CardState,CardState["cardNumber"]>((state)=>state.cardNumber)
@@ -19,7 +21,7 @@ function App() {
         })
       }
       <button onClick={()=>{addCard("123456789")}}>clickhere</button>
-      
+      <SavedCards/>
       
     </div>
   );

@@ -1,0 +1,33 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.card-number-col {
+  min-width: 4%;
+  height: 50px;
+  font-size: x-large;
+  font-weight: bolder;
+  border: none;
+  text-align: center;
+}
+.card-number-block {
+  border: solid black 2px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 23%;
+}
+.card-number-col:focus {
+  background-color: red;
+}
+.blocks-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+

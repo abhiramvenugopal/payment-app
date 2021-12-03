@@ -72,6 +72,10 @@
   width: 100%;
   height: 30px;
 }
+.input-field-border-black {
+  border: solid black 2px;
+  border-radius: 5px;
+}
 .expiry-cvv {
   display: flex;
   flex-direction: row;
@@ -114,6 +118,9 @@
   color: white;
   border-radius: 10px;
 }
+.full-width-btn:hover {
+  background-color: #2e1d47;
+}
 .card-container {
   width: 400px;
   height: 200px;
@@ -126,6 +133,9 @@
   padding: 10px;
   color: white;
   margin: 10px;
+}
+.card-container:hover {
+  background-color: #674d8d;
 }
 
 .card-number {
@@ -178,5 +188,12 @@
 @media (max-width: 480px) {
   .modal-content {
     width: 90%;
+  }
+  .card-container {
+    width: 90%;
+    height: 250px;
+  }
+  .large-bold {
+    font-size: x-large;
   }
 }

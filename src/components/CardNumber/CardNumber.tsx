@@ -3,30 +3,40 @@ import React,{useState,useEffect} from 'react';
 import './CardNumber.css';
 export interface CardNumberState{
     setCardNumber:Function
-    clearValue:Number
+    clearValue:number,
+    noOfInputBlock:number
 }
 
+/* component for inputing debit or credit card numbers */
+
 function CardNumber(props:CardNumberState) {
-    const totalNumberOfBlock:number=4
-    const [inputValue, setinputValue] = useState(new Array(totalNumberOfBlock*4).fill(""))
-    const [elemRefs, setelemRefs] = useState(new Array(totalNumberOfBlock*4))
-    const [focusindex, setfocusindex] = useState(0)
+    const totalNumberOfBlock:number=props.noOfInputBlock                                   // variable used for saving number of blocks inside card number input
+    const [inputValue, setinputValue] = useState(new Array(totalNumberOfBlock*4).fill("")) // state variable used for saving input values
+    const [elemRefs, setelemRefs] = useState(new Array(totalNumberOfBlock*4))              // arry using for saving array of references 
+    const [focusindex, setfocusindex] = useState(0)                                        // state used to set the focus for input
+
+    //initializing references for input field
     useEffect(() => {
         for(var i:number =0;i< totalNumberOfBlock*4;i++){
             elemRefs[i]=React.createRef()
         }
     }, [])
+
+    //seting focus for an input
     useEffect(() => {
         if(elemRefs[focusindex].current){
-            console.log("focusindex",elemRefs[focusindex])
             elemRefs[focusindex].current.focus()  
         }
    }, [focusindex,elemRefs]);
+
+   //clearing input values while closing
    useEffect(() => {
        if(props.clearValue){
            setinputValue(new Array(totalNumberOfBlock*4).fill(""))
        }
     }, [props.clearValue]);
+
+    //function for saving input values , limiting input feild length , transfering focus to next input field
     const onchangeOfInput=(id:string,value:string)=>{
         try {
             let fieldNumber=Number(id[6])
@@ -65,6 +75,8 @@ function CardNumber(props:CardNumberState) {
         }
         
     }
+
+    //function for deleting values while clicking on backspace
     const OnBackSpaceClick=(event: React.KeyboardEvent<HTMLInputElement>,id:string)=>{
         if (event.key==='Backspace'){
             console.log("backspace",event.key,id)

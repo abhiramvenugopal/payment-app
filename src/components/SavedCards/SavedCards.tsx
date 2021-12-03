@@ -7,15 +7,16 @@ import deleteIcon from "../../assets/deleteIcon.svg";
 import './SavedCards.css';
 
 
+/* component for listing all saved cards and adding new card to the list */
 
 function SavedCards() {
     const cards:CardInterface[] =useSelector<CardState,CardInterface[]>((state)=>state.cards)
-    const [display, setdisplay] = useState(false)
-    const [inputValues, setinputValues] = useState({} as CardInterface)
-    const [cardNumber, setcardNumber] = useState("")
-    const [cardsList, setcardsList] = useState(cards)
-    var [clearValue, setclearValue] = useState(0)
-    const [checkInput, setcheckInput] = useState(false)
+    const [display, setdisplay] = useState(false)                           // state variable for controlling modal 
+    const [inputValues, setinputValues] = useState({} as CardInterface)     // state variable for saving all input values
+    const [cardNumber, setcardNumber] = useState("")                        // state variable for saving card number getting from cardNumber component
+    const [cardsList, setcardsList] = useState(cards)                       // state variable for saving list of saved cards
+    var [clearValue, setclearValue] = useState(0)                           // state variable for clearing values of form
+    const [checkInput, setcheckInput] = useState(false)                     
 
 
     
@@ -23,16 +24,21 @@ function SavedCards() {
     const addCard= (cards:CardInterface[])=>{
       dispatch({type:"UPDATE_CARD_LIST",payload:cards})
     }
+
+    //copying card list from redux state
     useEffect(() => {
       let temp:CardInterface[]=[...cards]
       setcardsList(temp)
       
     }, [cards])
+
+    //function for clearing input values
    const clearinput=()=>{
-     console.log("here iam")
     setinputValues({} as CardInterface)
     setcardNumber("")
    }
+
+   //function for removeing card from saved cards list
    const removecard=(index:number)=>{
      let temp=[...cardsList]
      temp=temp.filter((value:CardInterface,indx:number)=>{
@@ -42,16 +48,17 @@ function SavedCards() {
    }
 
 
+   //function limiting length of each input field and saving onchange of input to state variable
     const limitLength=(value:string,id:string)=>{
       let temp={...inputValues}
       if(id==="month"){
-        temp={...inputValues,month:value}
+        temp={...inputValues,month:Number(value.slice(0,2))>12?"12":value.slice(0,2)}
       }
       if(id==="year"){
-        temp={...inputValues,year:value}
+        temp={...inputValues,year:value.slice(0,2)}
       }
       if(id==="cvv"){
-        temp={...inputValues,cvv:value}
+        temp={...inputValues,cvv:value.slice(0,3)}
       }
       if(id==="name"){
         temp={...inputValues,name:value}
@@ -59,6 +66,8 @@ function SavedCards() {
       setinputValues(temp)
       console.log(temp)
     }
+
+    //function for adding card to saved cards list
     const addNewCard=()=>{
       let val=Boolean(inputValues.name && cardNumber && cardNumber.length===16 && inputValues.cvv && inputValues.cvv.length===3 && inputValues.month && inputValues.year)
       console.log(val)
@@ -83,7 +92,7 @@ function SavedCards() {
       <div className="container">
         
         
-        
+        {/*display list  of cards saved */}
         <div className="saved-cards-container">
           {
           
@@ -120,7 +129,7 @@ function SavedCards() {
           
         </div>
           <div id="myModal" className={"modal "+(display?"display-modal":"hide-modal")}>
-            
+            {/* modal for inputing card details */}
             <div className="modal-content">
               <div className="header">
                 <span onClick={()=>{setdisplay(false)}} className="close">&times;</span>
@@ -136,12 +145,12 @@ function SavedCards() {
               <div className="modal-body">
                 <div className="card-form">
                   <label htmlFor="name">Name</label>
-                  <input value={inputValues.name?inputValues.name:""} onChange={(event)=>{limitLength(event.target.value,"name")}} className="input-field" name="name" type="text" />
+                  <input value={inputValues.name?inputValues.name:""} onChange={(event)=>{limitLength(event.target.value,"name")}} style={{fontSize:"large",fontWeight:"bold"}} className="input-field input-field-border-black" name="name" type="text" />
                   <label >Card Number</label>
-                  <CardNumber  clearValue={clearValue} setCardNumber={(number:string)=>{setcardNumber(number)}}/>
+                  <CardNumber noOfInputBlock={4}  clearValue={clearValue} setCardNumber={(number:string)=>{setcardNumber(number)}}/>
                   <div className="expiry-cvv">
                     <div className="card-form expiry-div">
-                        <label htmlFor="valid-thru">VALID THRU (mm/yy)</label>
+                        <label htmlFor="valid-thru">VALID THRU</label>
                         <div className="custom-row expiry-cvv-input-div">
                           <input value={inputValues.month?inputValues.month:""} onChange={(event)=>{limitLength(event.target.value,"month")}} className="input-field expiry-cvv-input " name="valid-thru" type="number" />
                           <span className="large-bold">/</span>
@@ -150,7 +159,7 @@ function SavedCards() {
                     </div>
                     <div className="cvv-div">
                       <label htmlFor="cvv">CVV</label>
-                      <input value={inputValues.cvv?inputValues.cvv:""} onChange={(event)=>{limitLength(event.target.value,"cvv")}} className="input-field expiry-cvv-input expiry-cvv-input-div" style={{width:"100px"}} name="cvv" type="number" />
+                      <input value={inputValues.cvv?inputValues.cvv:""} onChange={(event)=>{limitLength(event.target.value,"cvv")}} className="input-field expiry-cvv-input expiry-cvv-input-div" style={{width:"100px"}} name="cvv" type="password" />
                     </div>
 
                   </div>

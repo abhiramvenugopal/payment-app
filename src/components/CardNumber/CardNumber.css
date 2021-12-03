@@ -22,7 +22,7 @@ input[type="number"] {
   width: 23%;
 }
 .card-number-col:focus {
-  background-color: red;
+  background-color: #563d7c4d;
 }
 .blocks-group {
   display: flex;
@@ -30,4 +30,3 @@ input[type="number"] {
   justify-content: space-between;
   width: 100%;
 }
-

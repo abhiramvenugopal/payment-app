@@ -12,11 +12,11 @@ const initalState={
     cards:[]
 }
 
-type Action={type:"ADD_CARD", payload:CardInterface}
+type Action={type:"UPDATE_CARD_LIST", payload:CardInterface[]}
 const cardReducer=(state:CardState=initalState,action:Action)=>{
     switch (action.type) {
-        case "ADD_CARD":{
-            return {...state,cards:[...state.cards,action.payload]}
+        case "UPDATE_CARD_LIST":{
+            return {...state,cards:[...action.payload]}
         }
         default:
             return state;

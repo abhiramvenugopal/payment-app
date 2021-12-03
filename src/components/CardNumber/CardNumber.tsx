@@ -23,7 +23,6 @@ function CardNumber(props:CardNumberState) {
         }
    }, [focusindex,elemRefs]);
    useEffect(() => {
-       console.log("heyyy")
        if(props.clearValue){
            setinputValue(new Array(totalNumberOfBlock*4).fill(""))
        }
@@ -42,15 +41,14 @@ function CardNumber(props:CardNumberState) {
                 setinputValue([...temp])
                 if(fieldNumber<3){
                     fieldNumber+=1
+                    onchangeOfInput("input_"+fieldNumber+"_"+blockNumber,value.slice(1))  
                 }
                 else if(blockNumber<totalNumberOfBlock-1){
                     blockNumber+=1
                     fieldNumber=0
+                    onchangeOfInput("input_"+fieldNumber+"_"+blockNumber,value.slice(1))  
                 }
-                else{
-                    return
-                }
-                onchangeOfInput("input_"+fieldNumber+"_"+blockNumber,value.slice(1))   
+                 
             }
             else{
                 temp=inputValue
@@ -59,7 +57,9 @@ function CardNumber(props:CardNumberState) {
                 setfocusindex(blockNumber*totalNumberOfBlock+fieldNumber)
                 
             }
+            console.log(temp.join(""))
             props.setCardNumber(temp.join(""))
+
         } catch (error) {
             
         }

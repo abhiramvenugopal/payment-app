@@ -9,19 +9,19 @@ import './SavedCards.css';
 
 
 function SavedCards() {
-  const cards:CardInterface[] =useSelector<CardState,CardInterface[]>((state)=>state.cards)
-
+    const cards:CardInterface[] =useSelector<CardState,CardInterface[]>((state)=>state.cards)
     const [display, setdisplay] = useState(false)
     const [inputValues, setinputValues] = useState({} as CardInterface)
     const [cardNumber, setcardNumber] = useState("")
     const [cardsList, setcardsList] = useState(cards)
     var [clearValue, setclearValue] = useState(0)
+    const [checkInput, setcheckInput] = useState(false)
 
 
     
     const dispatch = useDispatch()
-    const addCard= (card:CardInterface)=>{
-      dispatch({type:"ADD_CARD",payload:card})
+    const addCard= (cards:CardInterface[])=>{
+      dispatch({type:"UPDATE_CARD_LIST",payload:cards})
     }
     useEffect(() => {
       let temp:CardInterface[]=[...cards]
@@ -60,8 +60,14 @@ function SavedCards() {
       console.log(temp)
     }
     const addNewCard=()=>{
+      let val=Boolean(inputValues.name && cardNumber && cardNumber.length===16 && inputValues.cvv && inputValues.cvv.length===3 && inputValues.month && inputValues.year)
+      console.log(val)
+      if(!(Boolean(inputValues.name && cardNumber && cardNumber.length===16 && inputValues.cvv && inputValues.cvv.length===3 && inputValues.month && inputValues.year))){
+        setcheckInput(true)
+        return
+      }
       let cardObject:CardInterface={name:inputValues.name,cardNumber:cardNumber,month:inputValues.month,year:inputValues.year,cvv:inputValues.cvv}
-      addCard(cardObject)
+      addCard([...cardsList,cardObject])
       setdisplay(false)
     }
     
@@ -70,6 +76,7 @@ function SavedCards() {
         <button onClick={()=>{setdisplay(true)
                               setclearValue(clearValue+1)
                               clearinput()
+                              setcheckInput(false)
                                               }} className="add-newcard-button-div">
           +
         </button>
@@ -118,6 +125,14 @@ function SavedCards() {
               <div className="header">
                 <span onClick={()=>{setdisplay(false)}} className="close">&times;</span>
               </div>
+              {
+                checkInput &&
+                <div>
+                  <span>Enter All field values</span>
+                </div>
+
+              }
+              
               <div className="modal-body">
                 <div className="card-form">
                   <label htmlFor="name">Name</label>

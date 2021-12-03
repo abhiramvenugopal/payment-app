@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CardInterface, CardState } from '../../redux/cardNumberReducer';
 import CardNumber from "../CardNumber/CardNumber";
 import chipsvg from "../../assets/chip.svg";
+import deleteIcon from "../../assets/deleteIcon.svg";
 import './SavedCards.css';
 
 
@@ -11,9 +12,10 @@ function SavedCards() {
   const cards:CardInterface[] =useSelector<CardState,CardInterface[]>((state)=>state.cards)
 
     const [display, setdisplay] = useState(false)
-    const [inputValues, setinputValues] = useState({})
+    const [inputValues, setinputValues] = useState({} as CardInterface)
     const [cardNumber, setcardNumber] = useState("")
     const [cardsList, setcardsList] = useState(cards)
+    var [clearValue, setclearValue] = useState(0)
 
 
     
@@ -26,6 +28,18 @@ function SavedCards() {
       setcardsList(temp)
       
     }, [cards])
+   const clearinput=()=>{
+     console.log("here iam")
+    setinputValues({} as CardInterface)
+    setcardNumber("")
+   }
+   const removecard=(index:number)=>{
+     let temp=[...cardsList]
+     temp=temp.filter((value:CardInterface,indx:number)=>{
+       return (index!==indx)
+     })
+     setcardsList(temp)
+   }
 
 
     const limitLength=(value:string,id:string)=>{
@@ -39,14 +53,28 @@ function SavedCards() {
       if(id==="cvv"){
         temp={...inputValues,cvv:value}
       }
+      if(id==="name"){
+        temp={...inputValues,name:value}
+      }
       setinputValues(temp)
       console.log(temp)
     }
+    const addNewCard=()=>{
+      let cardObject:CardInterface={name:inputValues.name,cardNumber:cardNumber,month:inputValues.month,year:inputValues.year,cvv:inputValues.cvv}
+      addCard(cardObject)
+      setdisplay(false)
+    }
     
   return (
-    <div>
-      <button onClick={()=>{addCard({name:"abhiram venugopal",cardNumber:"123456789",year:"21",month:"12",cvv:"987"})}}>clickhere</button>
+    <div className="custom-col">
+        <button onClick={()=>{setdisplay(true)
+                              setclearValue(clearValue+1)
+                              clearinput()
+                                              }} className="add-newcard-button-div">
+          +
+        </button>
       <div className="container">
+        
         
         
         <div className="saved-cards-container">
@@ -55,14 +83,16 @@ function SavedCards() {
           cardsList.map((value:CardInterface,index:number)=>{
             return(
 
-              <div className="card-container">
-                <div className="chip-logo">
-                  <img src={chipsvg} alt="error"/>
+              <div key={index} className="card-container">
+                <div onClick={()=>{removecard(index)}} className="delete-icon">
+                  <button style={{border:"none",backgroundColor:"transparent"}}><img src={deleteIcon} alt="error"/></button>   
+                </div>   
+                <div>
+                  <img src={chipsvg} alt="error"/>                  
                 </div>
                 <div className="card-number">
                   <span className="small-trans">card number</span>
                   <span className="large-bold">{value.cardNumber}</span>
-      
                 </div>
                 <div className="custom-row">
                   <div className="custom-col card-holder">
@@ -82,7 +112,6 @@ function SavedCards() {
           }
           
         </div>
-          <button onClick={()=>{setdisplay(true)}} id="myBtn">Open Modal</button>
           <div id="myModal" className={"modal "+(display?"display-modal":"hide-modal")}>
             
             <div className="modal-content">
@@ -92,33 +121,33 @@ function SavedCards() {
               <div className="modal-body">
                 <div className="card-form">
                   <label htmlFor="name">Name</label>
-                  <input className="input-field" name="name" type="text" />
+                  <input value={inputValues.name?inputValues.name:""} onChange={(event)=>{limitLength(event.target.value,"name")}} className="input-field" name="name" type="text" />
                   <label >Card Number</label>
-                  <CardNumber setCardNumber={(number:string)=>{setcardNumber(number)}}/>
+                  <CardNumber  clearValue={clearValue} setCardNumber={(number:string)=>{setcardNumber(number)}}/>
                   <div className="expiry-cvv">
                     <div className="card-form expiry-div">
                         <label htmlFor="valid-thru">VALID THRU (mm/yy)</label>
                         <div className="custom-row expiry-cvv-input-div">
-                          <input onChange={(event)=>{limitLength(event.target.value,"month")}} className="input-field expiry-cvv-input " name="valid-thru" type="number" />
+                          <input value={inputValues.month?inputValues.month:""} onChange={(event)=>{limitLength(event.target.value,"month")}} className="input-field expiry-cvv-input " name="valid-thru" type="number" />
                           <span className="large-bold">/</span>
-                          <input onChange={(event)=>{limitLength(event.target.value,"year")}} className="input-field expiry-cvv-input " name="valid-thru" type="number" />
+                          <input value={inputValues.year?inputValues.year:""} onChange={(event)=>{limitLength(event.target.value,"year")}} className="input-field expiry-cvv-input " name="valid-thru" type="number" />
                         </div>
                     </div>
                     <div className="cvv-div">
                       <label htmlFor="cvv">CVV</label>
-                      <input className="input-field expiry-cvv-input expiry-cvv-input-div" style={{width:"100px"}} name="cvv" type="number" />
+                      <input value={inputValues.cvv?inputValues.cvv:""} onChange={(event)=>{limitLength(event.target.value,"cvv")}} className="input-field expiry-cvv-input expiry-cvv-input-div" style={{width:"100px"}} name="cvv" type="number" />
                     </div>
 
                   </div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button className="full-width-btn">Add New Card</button>
+                <button className="full-width-btn" onClick={()=>{addNewCard()}}>Add New Card</button>
               </div>
             </div>
           </div>
       </div>
-      </div>
+    </div>
   );
 }
 

@@ -1,0 +1,12 @@
+.nav-bar {
+  width: 100%;
+  height: 5vh;
+  background-color: #563d7c;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
+}
+.nav-heading {
+  color: white;
+}

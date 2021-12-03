@@ -127,8 +127,7 @@
   color: white;
   margin: 10px;
 }
-.chip-logo {
-}
+
 .card-number {
   display: flex;
   flex-direction: column;
@@ -153,6 +152,27 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+.add-newcard-button-div {
+  margin-left: 70%;
+  margin-top: 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #563d7c;
+  border-radius: 50%;
+  border: transparent;
+  color: white;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+.add-newcard-button-div:hover {
+  background-color: #9573c8;
+  color: #563d7c;
+}
+.delete-icon {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 480px) {

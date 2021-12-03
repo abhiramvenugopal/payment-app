@@ -1,15 +1,22 @@
+export interface CardInterface{
+    cardNumber:string
+    year:string
+    month:string
+    cvv:string
+    name:string
+}
 export interface CardState{
-    cardNumber:string[]
+    cards:CardInterface[]
 }
 const initalState={
-    cardNumber:[]
+    cards:[]
 }
 
-type Action={type:"ADD_CARD", payload:string}
+type Action={type:"ADD_CARD", payload:CardInterface}
 const cardReducer=(state:CardState=initalState,action:Action)=>{
     switch (action.type) {
         case "ADD_CARD":{
-            return {...state,cardNumber:[...state.cardNumber,action.payload]}
+            return {...state,cards:[...state.cards,action.payload]}
         }
         default:
             return state;

@@ -26,8 +26,9 @@ function CardNumber(props:CardNumberState) {
             let fieldNumber=Number(id[6])
             let blockNumber=Number(id[8])
             console.log("avlue",value)
+            let temp
             if(value){
-                let temp=inputValue
+                temp=inputValue
                 temp[blockNumber*4+fieldNumber]=value.slice(0,1)
                 console.log(blockNumber,fieldNumber)
                 console.log(value.slice(0,1))
@@ -45,12 +46,13 @@ function CardNumber(props:CardNumberState) {
                 onchangeOfInput("input_"+fieldNumber+"_"+blockNumber,value.slice(1))   
             }
             else{
-                let temp=inputValue
+                temp=inputValue
                 temp[blockNumber*4+fieldNumber]=""
                 setinputValue([...temp])
                 setfocusindex(blockNumber*4+fieldNumber)
-
+                
             }
+            props.setCardNumber(temp.join(""))
         } catch (error) {
             
         }
